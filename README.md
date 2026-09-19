@@ -158,20 +158,26 @@ Rahul -> PremiumPlan | 4K Ultra HD | ₹799/mo | 4 device(s) | Downloads enabled
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/streaming-service-oop.git
+git clone https://github.com/informatica15/Stream-flix.git
+cd Stream-flix
 ```
 
-Navigate to the project directory:
+### Option 1: Run the Modern StreamFlix Web Application
+
+Run the FastAPI web server:
 
 ```bash
-cd streaming-service-oop
+python server.py
 ```
 
-Run the program:
+Then open your browser at **`http://127.0.0.1:8000`** to experience the full dark cinematic OTT interface with streaming playback, plan-aware quality selection, search, watchlist, and live subscription tier upgrades.
+
+### Option 2: Run the Console OOP Demo
 
 ```bash
-python main.py
+python final.py
 ```
+
 
 ---
 

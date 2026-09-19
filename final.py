@@ -98,17 +98,19 @@ def start_streaming(user, movie):
         user.watch_movie(movie)
     except NotLoggedInError as e:
         print(f"Error: {e}")
-stranger_things = Movie("Stranger Things", "Sci-Fi", 50)
-wednesday = Movie("Wednesday", "Mystery", 45)
-r = User("Rahul", "1234", BasicPlan())
-r.login("5678")
-r.login("1234")
-start_streaming(r, stranger_things)
-print(r)
-try:
-    r.upgrade_plan("ultra")
-except InvalidPlanError as e:
-    print(f"Error: {e}")
-r.upgrade_plan("premium")
-start_streaming(r, wednesday)
-print(r)
+if __name__ == "__main__":
+    stranger_things = Movie("Stranger Things", "Sci-Fi", 50)
+    wednesday = Movie("Wednesday", "Mystery", 45)
+    r = User("Rahul", "1234", BasicPlan())
+    r.login("5678")
+    r.login("1234")
+    start_streaming(r, stranger_things)
+    print(r)
+    try:
+        r.upgrade_plan("ultra")
+    except InvalidPlanError as e:
+        print(f"Error: {e}")
+    r.upgrade_plan("premium")
+    start_streaming(r, wednesday)
+    print(r)
+

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>StreamFlix — Cinematic Streaming Experience</title>
+  <meta name="description" content="StreamFlix is a premium modern streaming platform delivering cinematic films, series, and ultra HD playback." />
+  <meta name="theme-color" content="#090a0f" />
+
+  <!-- Fonts & Styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/components.css" />
+  <link rel="stylesheet" href="/static/css/player.css" />
+</head>
+<body>
+
+  <!-- 1. STICKY GLASS NAVIGATION BAR -->
+  <nav class="navbar" id="mainNavbar">
+    <div class="navbar-inner">
+      <a href="#" class="brand-logo" data-view="home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3" fill="url(#brandGrad)"/>
+          <defs>
+            <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#a78bfa"/>
+              <stop offset="100%" stop-color="#06b6d4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>Stream<span class="brand-flix">Flix</span></span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="#" class="nav-link active" data-view="home">Home</a></li>
+        <li><a href="#" class="nav-link" data-view="movies">Movies</a></li>
+        <li><a href="#" class="nav-link" data-view="tv">TV Shows</a></li>
+        <li><a href="#" class="nav-link" data-view="genres">Genres</a></li>
+        <li><a href="#" class="nav-link" data-view="mylist">My List</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="nav-btn-icon" id="navSearchBtn" aria-label="Search" title="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+
+        <div class="user-profile-trigger" id="userProfileTrigger" title="Account & Subscription">
+          <div class="avatar-img" id="navAvatar">R</div>
+          <span class="tier-pill" id="navTierPill">Basic</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 2. MAIN VIEW SECTIONS -->
+  <main>
+    <!-- View: Home -->
+    <section class="view-section active" id="view-home">
+      <!-- Hero Banner -->
+      <div class="hero-section" id="heroSection"></div>
+      <!-- Horizontal Carousels -->
+      <div id="homeRowsContainer" style="margin-top: -2rem; position: relative; z-index: 10;"></div>
+    </section>
+
+    <!-- View: Movies -->
+    <section class="view-section" id="view-movies">
+      <div class="container" style="padding-top: calc(var(--nav-height) + 2rem);">
+        <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Feature Films</h1>
+        <p style="margin-bottom: 2rem;">Explore cinematic blockbusters and award-winning masterpieces.</p>
+        <div class="search-results-grid" id="moviesGrid"></div>
+      </div>
+    </section>
+
+    <!-- View: TV Shows -->
+    <section class="view-section" id="view-tv">
+      <div class="container" style="padding-top: calc(var(--nav-height) + 2rem);">
+        <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Television & Series</h1>
+        <p style="margin-bottom: 2rem;">Binge-worthy seasonal sagas and thrilling episodic stories.</p>
+        <div class="search-results-grid" id="tvGrid"></div>
+      </div>
+    </section>
+
+    <!-- View: Genres -->
+    <section class="view-section" id="view-genres">
+      <div class="container" style="padding-top: calc(var(--nav-height) + 2rem);">
+        <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Browse by Genre</h1>
+        <p style="margin-bottom: 1.75rem;">Discover stories tailored to your mood.</p>
+        <div class="filter-pills-group" id="genreTabs" style="margin-bottom: 2.5rem;"></div>
+        <div class="search-results-grid" id="genreMoviesGrid"></div>
+      </div>
+    </section>
+
+    <!-- View: My List -->
+    <section class="view-section" id="view-mylist">
+      <div class="container" style="padding-top: calc(var(--nav-height) + 2rem);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+          <div>
+            <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">My Watchlist</h1>
+            <p>Your handpicked movies and series ready to stream anytime.</p>
+          </div>
+          <span class="badge badge-uhd" id="myListCount" style="padding: 0.4rem 0.85rem; font-size: 0.9rem;">0 titles</span>
+        </div>
+        
+        <div class="search-results-grid" id="myListGrid"></div>
+
+        <div class="empty-state" id="myListEmpty" style="display: none;">
+          <div class="empty-state-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </div>
+          <h3 class="empty-state-title">Your Watchlist is Empty</h3>
+          <p class="empty-state-text">Explore movies and TV shows to add them to your personalized collection.</p>
+          <button class="btn-primary" onclick="window.app.switchView('home')">Explore Catalog</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- View: Search -->
+    <section class="view-section" id="view-search">
+      <div class="search-view-container">
+        <div class="search-bar-wrapper">
+          <svg class="search-icon-inside" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput" 
+            placeholder="Search by title, director, actor or genre..." 
+            autocomplete="off" 
+          />
+        </div>
+
+        <div class="search-filter-bar">
+          <div class="filter-pills-group">
+            <button class="filter-pill search-type-pill active" data-type="all">All Content</button>
+            <button class="filter-pill search-type-pill" data-type="movie">Movies</button>
+            <button class="filter-pill search-type-pill" data-type="series">TV Shows</button>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <span id="searchResultsCount" style="font-size: 0.9rem; color: var(--text-muted);">Found 0 titles</span>
+            <select id="searchSort" style="background: var(--bg-surface-elevated); color: var(--text-secondary); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); padding: 0.45rem 0.85rem; font-size: 0.85rem; outline: none; cursor: pointer;">
+              <option value="relevance">Sort: Relevance</option>
+              <option value="rating">Sort: Top Rated</option>
+              <option value="year">Sort: Release Year</option>
+              <option value="match">Sort: % Match</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="search-results-grid" id="searchResultsGrid"></div>
+
+        <div class="empty-state" id="searchEmptyState" style="display: none;">
+          <div class="empty-state-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <h3 class="empty-state-title">No matching titles found</h3>
+          <p class="empty-state-text">Try searching for keywords like "Sci-Fi", "Nolan", "Stranger", or "Dune".</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 3. FOOTER -->
+  <footer style="border-top: 1px solid var(--border-subtle); padding: 4rem 2.5rem 6rem 2.5rem; background: var(--bg-darkest); margin-top: 5rem;">
+    <div class="container" style="display: flex; flex-direction: column; gap: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+            <polygon points="5 3 19 12 5 21 5 3" fill="url(#brandGrad)"/>
+          </svg>
+          <span>Stream<span class="brand-flix">Flix</span></span>
+        </div>
+        <div style="display: flex; gap: 2rem; font-size: 0.9rem; color: var(--text-muted);">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Subscription Agreement</a>
+          <a href="#">Help Center</a>
+        </div>
+      </div>
+      <p style="font-size: 0.82rem; color: var(--text-muted);">
+        © 2026 StreamFlix, Inc. Designed for premium high-fidelity streaming. Powered by Python OOP architecture.
+      </p>
+    </div>
+  </footer>
+
+  <!-- 4. MOVIE DETAILS MODAL -->
+  <div class="modal-overlay" id="movieDetailModal">
+    <div class="modal-dialog"></div>
+  </div>
+
+  <!-- 5. CINEMATIC VIDEO PLAYER -->
+  <div class="player-view-container" id="playerView" style="display: none;">
+    <div class="player-video-wrapper">
+      <video class="player-video-element" id="mainVideo" playsinline preload="auto"></video>
+
+      <!-- Center Play/Pause Splash -->
+      <div class="player-center-play-splash" id="playerCenterSplash"></div>
+
+      <!-- Controls Overlay -->
+      <div class="player-controls-overlay">
+        <!-- Top Row -->
+        <div class="player-top-bar">
+          <button class="player-back-btn" id="playerBackBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            <span>Exit Player</span>
+          </button>
+
+          <div class="player-title-info">
+            <h3 class="player-movie-title" id="playerMovieTitle">Movie Title</h3>
+            <span class="player-badge-tier" id="playerTierBadge">1080p Full HD</span>
+          </div>
+
+          <div class="player-shortcuts-hint">
+            Space: Play/Pause • Arrows: Seek/Vol • F: Fullscreen
+          </div>
+        </div>
+
+        <!-- Bottom Controls -->
+        <div class="player-bottom-bar">
+          <!-- Timeline Scrubber -->
+          <div class="player-scrubber-container" id="playerScrubber">
+            <div class="player-scrubber-buffer" id="playerScrubberBuffer"></div>
+            <div class="player-scrubber-progress" id="playerScrubberFill">
+              <div class="player-scrubber-handle"></div>
+            </div>
+            <div class="player-time-tooltip" id="playerTooltip">00:00</div>
+          </div>
+
+          <!-- Controls Row -->
+          <div class="player-controls-row">
+            <div class="player-controls-left">
+              <!-- Play / Pause -->
+              <button class="player-ctrl-btn" id="playerPlayBtn" aria-label="Play or pause">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <!-- Skip -10s -->
+              <button class="player-ctrl-btn" id="playerSkipBack" title="Skip back 10s">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                </svg>
+              </button>
+              <!-- Skip +10s -->
+              <button class="player-ctrl-btn" id="playerSkipForward" title="Skip forward 10s">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                </svg>
+              </button>
+              <!-- Volume & Slider -->
+              <div class="player-volume-wrapper">
+                <button class="player-ctrl-btn" id="playerVolBtn" aria-label="Mute toggle">
+                  <span id="playerVolIcon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                    </svg>
+                  </span>
+                </button>
+                <input type="range" class="player-volume-slider" id="playerVolSlider" min="0" max="1" step="0.05" value="1" />
+              </div>
+              <!-- Time Elapsed / Total -->
+              <div class="player-time-display" id="playerTimeText">00:00 / 00:00</div>
+            </div>
+
+            <div class="player-controls-right">
+              <!-- Quality Menu Button -->
+              <button class="player-ctrl-btn" id="playerQualityBtn" style="font-size: 0.85rem; font-weight: 700; gap: 0.35rem;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                <span>Quality</span>
+              </button>
+
+              <!-- Speed Menu Button -->
+              <button class="player-ctrl-btn" id="playerSpeedBtn" style="font-size: 0.85rem; font-weight: 700;">
+                <span>1x</span>
+              </button>
+
+              <!-- Fullscreen Button -->
+              <button class="player-ctrl-btn" id="playerFullscreenBtn" aria-label="Fullscreen">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Popup Menu: Quality -->
+        <div class="player-popup-menu" id="playerQualityMenu"></div>
+
+        <!-- Popup Menu: Speed -->
+        <div class="player-popup-menu" id="playerSpeedMenu">
+          <div class="player-menu-option" data-speed="0.5">0.5x Slow</div>
+          <div class="player-menu-option" data-speed="0.75">0.75x</div>
+          <div class="player-menu-option selected" data-speed="1.0">1.0x Normal</div>
+          <div class="player-menu-option" data-speed="1.25">1.25x</div>
+          <div class="player-menu-option" data-speed="1.5">1.5x Fast</div>
+          <div class="player-menu-option" data-speed="2.0">2.0x Double</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. PROFILE & SUBSCRIPTION MODAL -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-dialog"></div>
+  </div>
+
+  <!-- 7. MOBILE BOTTOM NAVIGATION -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav">
+    <a href="#" class="mobile-nav-item active" data-view="home">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Home</span>
+    </a>
+    <a href="#" class="mobile-nav-item" data-view="search">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <span>Search</span>
+    </a>
+    <a href="#" class="mobile-nav-item" data-view="mylist">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span>My List</span>
+    </a>
+    <a href="#" class="mobile-nav-item" data-view="profile" onclick="window.app.profileModal.open(); return false;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <!-- 8. TOAST NOTIFICATIONS -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Boot Module -->
+  <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

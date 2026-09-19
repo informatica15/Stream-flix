@@ -711,7 +711,8 @@ def update_watch_history(req: WatchHistoryRequest):
     return {"success": True}
 
 # Static Files & SPA Fallback
-static_dir = os.path.join(os.path.dirname(__file__), "static")
+current_dir = os.path.dirname(os.path.abspath(__file__))
+static_dir = os.path.join(current_dir, "static")
 if not os.path.exists(static_dir):
     os.makedirs(static_dir, exist_ok=True)
 
@@ -720,6 +721,8 @@ app.mount("/static", StaticFiles(directory=static_dir), name="static")
 @app.get("/")
 def serve_index():
     index_file = os.path.join(static_dir, "index.html")
+    if not os.path.exists(index_file):
+        index_file = os.path.join(current_dir, "index.html")
     if os.path.exists(index_file):
         return FileResponse(index_file)
     return {"message": "StreamFlix API is running. Create static/index.html to view UI."}

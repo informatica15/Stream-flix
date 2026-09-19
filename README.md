@@ -1,6 +1,7 @@
 # Python Streaming Service (OOP)
 
 A Python project that simulates an online movie streaming platform, built to demonstrate solid object-oriented design. It covers the four core OOP pillars — abstraction, encapsulation, inheritance, and polymorphism — along with custom exception handling and method overriding.
+LIVE : https://stream-flix-sandy-ten.vercel.app/
 
 ---
 
